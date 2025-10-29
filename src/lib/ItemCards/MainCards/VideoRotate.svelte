@@ -53,6 +53,11 @@
     <Chip
         selectionItems={[
             { 
+                id: "-1", 
+                display: getLang("Don't rotate"), 
+                selected: ConversionOptions.videoOptions.aspectRatio.rotation === -1 
+            },
+            { 
                 id: String(ROTATION_90), 
                 display: getLang("Rotate") + " 90°", 
                 selected: ConversionOptions.videoOptions.aspectRatio.rotation === ROTATION_90 
