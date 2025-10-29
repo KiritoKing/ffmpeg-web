@@ -6,6 +6,12 @@
     import Switch from "../../UIElements/Switch.svelte";
     import ConversionOptions from "../../../ts/TabOptions/ConversionOptions";
 
+    // Rotation angle constants (in multiples of PI for FFmpeg)
+    // 90° = 0.5*PI, 180° = 1*PI, 270° = 1.5*PI
+    const ROTATION_90 = 0.5;
+    const ROTATION_180 = 1;
+    const ROTATION_270 = 1.5;
+
     // Initialize rotation settings when this component is loaded
     $: {
         // Set video and audio to copy mode for faster processing
@@ -48,19 +54,19 @@
     <Chip
         selectionItems={[
             { 
-                id: "0.5", 
+                id: String(ROTATION_90), 
                 display: getLang("Rotate") + " 90°", 
-                selected: ConversionOptions.videoOptions.aspectRatio.rotation === 0.5 
+                selected: ConversionOptions.videoOptions.aspectRatio.rotation === ROTATION_90 
             },
             { 
-                id: "1", 
+                id: String(ROTATION_180), 
                 display: getLang("Rotate") + " 180°", 
-                selected: ConversionOptions.videoOptions.aspectRatio.rotation === 1 
+                selected: ConversionOptions.videoOptions.aspectRatio.rotation === ROTATION_180 
             },
             { 
-                id: "1.5", 
+                id: String(ROTATION_270), 
                 display: getLang("Rotate") + " 270°", 
-                selected: ConversionOptions.videoOptions.aspectRatio.rotation === 1.5 
+                selected: ConversionOptions.videoOptions.aspectRatio.rotation === ROTATION_270 
             },
         ]}
         on:userSelection={({ detail }) => {
