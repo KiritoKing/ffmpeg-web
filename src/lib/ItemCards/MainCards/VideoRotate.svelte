@@ -13,30 +13,29 @@
     const ROTATION_270 = 1.5;
 
     // Initialize rotation settings when this component is loaded
-    $: {
-        // Set video and audio to copy mode for faster processing
-        ConversionOptions.isVideoSelected = true;
-        ConversionOptions.isAudioSelected = true;
-        ConversionOptions.videoTypeSelected = "copy";
-        ConversionOptions.audioTypeSelected = "copy";
-        // Enable aspect ratio editing to access rotation
-        ConversionOptions.videoOptions.aspectRatio.isBeingEdited = true;
-        // Reset width and height to maintain original
-        ConversionOptions.videoOptions.aspectRatio.width = -1;
-        ConversionOptions.videoOptions.aspectRatio.height = -1;
-    }
+    ConversionOptions.isVideoSelected = true;
+    ConversionOptions.isAudioSelected = true;
+    ConversionOptions.audioTypeSelected = "copy";
+    ConversionOptions.videoOptions.aspectRatio.isBeingEdited = true;
+    ConversionOptions.videoOptions.aspectRatio.width = -1;
+    ConversionOptions.videoOptions.aspectRatio.height = -1;
 
     let reencodeVideo = false;
 
     function handleRotationChange(angle: number) {
         ConversionOptions.videoOptions.aspectRatio.rotation = angle;
-        // If we need to re-encode for rotation to work properly
-        if (reencodeVideo) {
+        // Rotation requires re-encoding because FFmpeg filters cannot be used with -vcodec copy
+        // When rotation is enabled (angle !== -1), we must re-encode
+        if (angle !== -1 || reencodeVideo) {
             ConversionOptions.videoTypeSelected = "libx264";
         } else {
             ConversionOptions.videoTypeSelected = "copy";
         }
     }
+    
+    // Initialize codec based on current rotation setting
+    handleRotationChange(ConversionOptions.videoOptions.aspectRatio.rotation);
+
 </script>
 
 <div class="flex hcenter wcenter" style="gap: 10px">
@@ -53,6 +52,11 @@
 <ChipContainer>
     <Chip
         selectionItems={[
+            { 
+                id: "-1", 
+                display: getLang("Don't rotate"), 
+                selected: ConversionOptions.videoOptions.aspectRatio.rotation === -1 
+            },
             { 
                 id: String(ROTATION_90), 
                 display: getLang("Rotate") + " 90°", 
