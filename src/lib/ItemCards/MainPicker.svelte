@@ -20,6 +20,7 @@
     import AudioToVideo from "./MainCards/AudioToVideo.svelte";
     import ExtraAudioToVideoSettings from "../InnerDialog/ExtraAudioToVideoSettings.svelte";
     import ImageToVideo from "./MainCards/ImageToVideo.svelte";
+    import VideoRotate from "./MainCards/VideoRotate.svelte";
     const dispatch = createEventDispatcher();
     /**
      * What operation the user wants to do
@@ -56,6 +57,7 @@
                     display: getLang("Convert music file to video"),
                     id: "AudioToVideo",
                 },
+                { display: getLang("Rotate video"), id: "VideoRotate" },
             ]}
             on:userSelection={({ detail }) => {
                 applicationPart = detail;
@@ -113,8 +115,15 @@
                 }}
             ></AudioToVideo><br />
         </div>
+    {:else if applicationPart === "VideoRotate"}
+        <div
+            in:slide={{ duration: 600, delay: 600 }}
+            out:slide={{ duration: 600 }}
+        >
+            <VideoRotate></VideoRotate><br />
+        </div>
     {/if}<br />
-    {#if applicationPart !== "Merge" && applicationPart !== "Image" && applicationPart !== "ImageToVideo" && applicationPart !== "AudioToVideo"}
+    {#if applicationPart !== "Merge" && applicationPart !== "Image" && applicationPart !== "ImageToVideo" && applicationPart !== "AudioToVideo" && applicationPart !== "VideoRotate"}
         <TrimContent></TrimContent>
     {/if}
     <br />
