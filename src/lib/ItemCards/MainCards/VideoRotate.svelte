@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { getLang } from "../../../ts/LanguageAdapt";
     import AdaptiveAsset from "../../UIElements/AdaptiveAsset.svelte";
     import Chip from "../../UIElements/ChipElements/Chip.svelte";
@@ -22,7 +22,7 @@
 
     let reencodeVideo = false;
 
-    function handleRotationChange(angle) {
+    function handleRotationChange(angle: number) {
         ConversionOptions.videoOptions.aspectRatio.rotation = angle;
         // If we need to re-encode for rotation to work properly
         if (reencodeVideo) {
@@ -48,23 +48,23 @@
     <Chip
         selectionItems={[
             { 
-                id: 0.5, 
+                id: "0.5", 
                 display: getLang("Rotate") + " 90°", 
                 selected: ConversionOptions.videoOptions.aspectRatio.rotation === 0.5 
             },
             { 
-                id: 1, 
+                id: "1", 
                 display: getLang("Rotate") + " 180°", 
                 selected: ConversionOptions.videoOptions.aspectRatio.rotation === 1 
             },
             { 
-                id: 1.5, 
+                id: "1.5", 
                 display: getLang("Rotate") + " 270°", 
                 selected: ConversionOptions.videoOptions.aspectRatio.rotation === 1.5 
             },
         ]}
         on:userSelection={({ detail }) => {
-            handleRotationChange(detail);
+            handleRotationChange(parseFloat(detail));
         }}
     ></Chip>
 </ChipContainer>
